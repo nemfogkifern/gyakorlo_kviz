@@ -60,15 +60,10 @@ async function loadQuestions() {
 
     q.options.forEach((opt, i) => {
       if (opt.trim()) {
-        const label = document.createElement("label");
+        const label = document.createElement("div");
         label.className = "option";
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = `q${currentIndex}`;
-        input.value = i;
-        input.onclick = () => checkAnswer(i, q.correct);
-        label.appendChild(input);
-        label.appendChild(document.createTextNode(" " + opt));
+        label.onclick = () => checkAnswer(i, q.correct, label);
+        label.textContent = opt;
         qDiv.appendChild(label);
       }
     });
@@ -88,12 +83,13 @@ async function loadQuestions() {
     qDiv.appendChild(nextBtn);
     container.appendChild(qDiv);
 
-    function checkAnswer(selected, correct) {
+    function checkAnswer(selected, correct, selectedLabel) {
       const labels = container.querySelectorAll(".option");
       labels.forEach((l, idx) => {
         l.classList.remove("correct", "incorrect");
         if (idx === correct) l.classList.add("correct");
-        else if (idx === selected) l.classList.add("incorrect");
+        else if (l === selectedLabel) l.classList.add("incorrect");
+        l.classList.add("disabled");
       });
       if (selected === correct) score++;
       else wrongQuestions.push(q);
@@ -121,7 +117,6 @@ async function loadQuestions() {
   startNewSet();
 }
 
-// PapaParse beemelése
 const script = document.createElement('script');
 script.src = 'https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js';
 script.onload = loadQuestions;

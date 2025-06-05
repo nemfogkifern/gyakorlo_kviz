@@ -1,63 +1,109 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f4f6f9;
+  background: var(--bg);
+  color: var(--text);
   padding: 20px;
   margin: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+:root {
+  --bg: #121212;
+  --text: #e0e0e0;
+  --card: #1e1e1e;
+  --option: #2c2c2c;
+  --option-hover: #3a3a3a;
+  --title: #f1f1f1;
+  --button: #2980b9;
+  --button-hover: #1c6691;
+  --correct: #2ecc71;
+  --correct-border: #27ae60;
+  --incorrect: #e74c3c;
+  --incorrect-border: #c0392b;
 }
 
 h1 {
   text-align: center;
-  color: #2c3e50;
+  color: var(--title);
   margin-bottom: 30px;
 }
 
 .card {
-  background: #ffffff;
+  background: var(--card);
   padding: 30px;
   margin: auto;
   margin-bottom: 30px;
   max-width: 700px;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
   transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .question h3 {
   font-size: 1.2rem;
-  color: #34495e;
+  color: var(--title);
 }
 
 .option {
-  display: block;
+  display: flex;
+  align-items: center;
   margin: 12px 0;
   padding: 14px 20px;
   border-radius: 10px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  background: #ecf0f1;
+  background: var(--option);
   cursor: pointer;
   font-size: 1rem;
   border: 1px solid transparent;
+  transition: background 0.3s ease, transform 0.2s ease;
+  pointer-events: auto;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 .option:hover {
   transform: scale(1.02);
-  background: #d0dfe6;
+  background: var(--option-hover);
 }
 
-.option input {
-  margin-right: 12px;
+.option input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--text);
+  border-radius: 50%;
+  margin-right: 14px;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+}
+
+.option input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background: var(--text);
+  border-radius: 50%;
 }
 
 .correct {
-  background-color: #27ae60 !important;
+  background-color: var(--correct) !important;
   color: white;
-  border: 1px solid #1e8449;
+  border: 1px solid var(--correct-border);
 }
 
 .incorrect {
-  background-color: #e74c3c !important;
+  background-color: var(--incorrect) !important;
   color: white;
-  border: 1px solid #c0392b;
+  border: 1px solid var(--incorrect-border);
 }
 
 button {
@@ -65,7 +111,7 @@ button {
   margin: 30px auto 0 auto;
   padding: 14px 30px;
   font-size: 1rem;
-  background-color: #3498db;
+  background-color: var(--button);
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,7 +120,7 @@ button {
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: var(--button-hover);
 }
 
 .result {
@@ -82,7 +128,12 @@ button:hover {
   font-size: 1.3rem;
   font-weight: bold;
   margin-top: 30px;
-  color: #2c3e50;
+  color: var(--title);
+}
+
+.option.disabled {
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 @media (max-width: 600px) {
