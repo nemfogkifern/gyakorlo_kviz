@@ -1,31 +1,39 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 20px;
-  margin: 0;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
 :root {
   --bg: #121212;
   --text: #e0e0e0;
   --card: #1e1e1e;
   --option: #2c2c2c;
   --option-hover: #3a3a3a;
-  --title: #f1f1f1;
+  --correct: #2ecc71;
+  --incorrect: #e74c3c;
   --button: #2980b9;
   --button-hover: #1c6691;
-  --correct: #2ecc71;
-  --correct-border: #27ae60;
-  --incorrect: #e74c3c;
-  --incorrect-border: #c0392b;
 }
 
-h1 {
+body.light-mode {
+  --bg: #f4f6f9;
+  --text: #2c3e50;
+  --card: #ffffff;
+  --option: #ecf0f1;
+  --option-hover: #d0dfe6;
+  --correct: #2ecc71;
+  --incorrect: #e74c3c;
+  --button: #3498db;
+  --button-hover: #2980b9;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+h1, h3 {
+  color: var(--text);
   text-align: center;
-  color: var(--title);
-  margin-bottom: 30px;
 }
 
 .card {
@@ -45,70 +53,39 @@ h1 {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.question h3 {
-  font-size: 1.2rem;
-  color: var(--title);
-}
-
 .option {
-  display: flex;
-  align-items: center;
-  margin: 12px 0;
+  background: var(--option);
+  color: var(--text);
   padding: 14px 20px;
   border-radius: 10px;
-  background: var(--option);
+  margin: 10px 0;
   cursor: pointer;
-  font-size: 1rem;
-  border: 1px solid transparent;
-  transition: background 0.3s ease, transform 0.2s ease;
-  pointer-events: auto;
-  animation: fadeIn 0.4s ease-in-out;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .option:hover {
-  transform: scale(1.02);
   background: var(--option-hover);
+  transform: scale(1.02);
 }
 
-.option input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--text);
-  border-radius: 50%;
-  margin-right: 14px;
-  position: relative;
-  outline: none;
-  cursor: pointer;
+.option.disabled {
+  pointer-events: none;
+  opacity: 0.6;
 }
 
-.option input[type="radio"]:checked::before {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 10px;
-  height: 10px;
-  background: var(--text);
-  border-radius: 50%;
-}
-
-.correct {
-  background-color: var(--correct) !important;
+.option.correct {
+  background: var(--correct) !important;
   color: white;
-  border: 1px solid var(--correct-border);
 }
 
-.incorrect {
-  background-color: var(--incorrect) !important;
+.option.incorrect {
+  background: var(--incorrect) !important;
   color: white;
-  border: 1px solid var(--incorrect-border);
 }
 
 button {
   display: block;
-  margin: 30px auto 0 auto;
+  margin: 30px auto;
   padding: 14px 30px;
   font-size: 1rem;
   background-color: var(--button);
@@ -119,31 +96,64 @@ button {
   transition: background 0.3s ease;
 }
 
-button:hover {
-  background-color: var(--button-hover);
+
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+  padding: 8px;
+  transition: transform 0.3s ease;
 }
 
-.result {
+.theme-toggle .icon {
+  width: 28px;
+  height: 28px;
+  stroke: var(--text);
+  transition: transform 0.4s ease;
+}
+
+body.light-mode .theme-toggle .icon {
+  transform: rotate(180deg);
+}
+
+.theme-toggle:hover .icon {
+  transform: scale(1.1);
+}
+
+.theme-toggle .sun {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+body.light-mode .theme-toggle .sun {
+  opacity: 0;
+}
+
+
+#result {
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  margin-top: 20px;
   font-weight: bold;
-  margin-top: 30px;
-  color: var(--title);
+  color: var(--text);
 }
 
-.option.disabled {
-  pointer-events: none;
-  opacity: 0.6;
-}
 
 @media (max-width: 600px) {
-  .question h3 {
-    font-size: 1rem;
+  .card {
+    padding: 20px;
   }
+
   .option {
     font-size: 0.95rem;
     padding: 12px 16px;
   }
+
   button {
     font-size: 0.95rem;
     padding: 12px 24px;

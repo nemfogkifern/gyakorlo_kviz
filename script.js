@@ -25,6 +25,18 @@ async function loadQuestions() {
   const container = document.getElementById("questions-container");
   const result = document.getElementById("result");
 
+  document.querySelector(".theme-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("light-mode");
+  localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+});
+
+
   function shuffle(array) {
     return array.sort(() => Math.random() - 0.5);
   }
