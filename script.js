@@ -1,5 +1,33 @@
-async function loadQuestions() {
-  const response = await fetch('jog_kerdesek.csv');
+// Téma váltás kezelése
+document.querySelector('.theme-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+  localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+  }
+});
+
+async function init() {
+  const resp = await fetch('subjects.json');
+  const subjects = await resp.json();
+  const select = document.getElementById('subjectSelect');
+
+  subjects.forEach(sub => {
+    const opt = document.createElement('option');
+    opt.value = sub.file;
+    opt.textContent = sub.name;
+    select.appendChild(opt);
+  });
+
+  select.addEventListener('change', () => loadQuestions(select.value));
+  loadQuestions(select.value);
+}
+
+async function loadQuestions(file) {
+  const response = await fetch(file);
   const data = await response.text();
 
   const parsed = Papa.parse(data, {
@@ -22,20 +50,8 @@ async function loadQuestions() {
   let wrongQuestions = [];
   let seenIds = new Set();
 
-  const container = document.getElementById("questions-container");
-  const result = document.getElementById("result");
-
-  document.querySelector(".theme-toggle").addEventListener("click", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light-mode");
-  }
-});
-
+  const container = document.getElementById('questions-container');
+  const result = document.getElementById('result');
 
   function shuffle(array) {
     return array.sort(() => Math.random() - 0.5);
@@ -60,29 +76,29 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderQuestion() {
-    container.innerHTML = "";
+    container.innerHTML = '';
     result.innerText = `Pont: ${score} / ${questionPool.length} | Kérdés: ${currentIndex + 1} / ${questionPool.length}`;
 
     const q = questionPool[currentIndex];
-    const qDiv = document.createElement("div");
-    qDiv.className = "question card";
-    const qTitle = document.createElement("h3");
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question card';
+    const qTitle = document.createElement('h3');
     qTitle.innerText = q.question;
     qDiv.appendChild(qTitle);
 
     q.options.forEach((opt, i) => {
-      if (opt.trim()) {
-        const label = document.createElement("div");
-        label.className = "option";
+      if (opt && opt.trim()) {
+        const label = document.createElement('div');
+        label.className = 'option';
         label.onclick = () => checkAnswer(i, q.correct, label);
         label.textContent = opt;
         qDiv.appendChild(label);
       }
     });
 
-    const nextBtn = document.createElement("button");
-    nextBtn.innerText = "Következő kérdés";
-    nextBtn.style.display = "none";
+    const nextBtn = document.createElement('button');
+    nextBtn.innerText = 'Következő kérdés';
+    nextBtn.style.display = 'none';
     nextBtn.onclick = () => {
       currentIndex++;
       if (currentIndex < questionPool.length) {
@@ -96,32 +112,32 @@ window.addEventListener("DOMContentLoaded", () => {
     container.appendChild(qDiv);
 
     function checkAnswer(selected, correct, selectedLabel) {
-      const labels = container.querySelectorAll(".option");
+      const labels = container.querySelectorAll('.option');
       labels.forEach((l, idx) => {
-        l.classList.remove("correct", "incorrect");
-        if (idx === correct) l.classList.add("correct");
-        else if (l === selectedLabel) l.classList.add("incorrect");
-        l.classList.add("disabled");
+        l.classList.remove('correct', 'incorrect');
+        if (idx === correct) l.classList.add('correct');
+        else if (l === selectedLabel) l.classList.add('incorrect');
+        l.classList.add('disabled');
       });
       if (selected === correct) score++;
       else wrongQuestions.push(q);
-      nextBtn.style.display = "block";
+      nextBtn.style.display = 'block';
     }
   }
 
   function showEndOptions() {
-    container.innerHTML = "";
+    container.innerHTML = '';
     result.innerText = `Végpontszám: ${score} / ${questionPool.length}`;
 
     if (wrongQuestions.length > 0) {
-      const retryBtn = document.createElement("button");
+      const retryBtn = document.createElement('button');
       retryBtn.innerText = `Rossz kérdések ismétlése (${wrongQuestions.length})`;
       retryBtn.onclick = () => startNewSet(wrongQuestions);
       container.appendChild(retryBtn);
     }
 
-    const newSetBtn = document.createElement("button");
-    newSetBtn.innerText = "Új 20 kérdés indítása";
+    const newSetBtn = document.createElement('button');
+    newSetBtn.innerText = 'Új 20 kérdés indítása';
     newSetBtn.onclick = () => startNewSet();
     container.appendChild(newSetBtn);
   }
@@ -131,5 +147,5 @@ window.addEventListener("DOMContentLoaded", () => {
 
 const script = document.createElement('script');
 script.src = 'https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js';
-script.onload = loadQuestions;
+script.onload = init;
 document.head.appendChild(script);
