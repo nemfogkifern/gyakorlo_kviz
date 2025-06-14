@@ -1,0 +1,6 @@
+"id","question","option_1","option_2","option_3","option_4","correct"
+"1","Mi az operációs rendszer fő feladata?","A hardver erőforrások kezelése","Weboldalak készítése","Adatbázisok létrehozása","Programnyelvek fordítása","1"
+"2","Melyik nem programozási nyelv?","Python","HTML","Java","C++","2"
+"3","Mi a RAM?","Állandó tár","Csak olvasható memória","Központi feldolgozó egység","Véletlen elérésű memória","4"
+"4","Melyik eszköz tárol adatot tartósan?","SSD","RAM","Cache","Busz","1"
+"5","Mit jelent a HTML?","HyperText Markup Language","HighText Machine Language","Hyperlink and Text Markup Language","Home Tool Markup Language","1"

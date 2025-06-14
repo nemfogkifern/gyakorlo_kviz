@@ -134,6 +134,20 @@ body.light-mode .theme-toggle .sun {
   opacity: 0;
 }
 
+.subject-select {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.subject-select select {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--option-hover);
+}
+
 
 #result {
   text-align: center;
